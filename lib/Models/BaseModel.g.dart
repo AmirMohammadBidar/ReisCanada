@@ -10,7 +10,7 @@ BaseModel _$BaseModelFromJson(Map<String, dynamic> json) => BaseModel(
       json['isSuccess'] as bool,
       json['statusCode'] as int,
       json['statusMessage'] as String,
-      json['resultObject'] as Map<String, dynamic>,
+      json['resultObject'] as Object,
     );
 
 Map<String, dynamic> _$BaseModelToJson(BaseModel instance) => <String, dynamic>{

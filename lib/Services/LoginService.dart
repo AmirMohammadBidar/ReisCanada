@@ -63,8 +63,8 @@ class LoginService {
               headers: {HttpHeaders.contentTypeHeader: "application/json"}),
           data: json.encode(param));
       var baseModel = BaseModel.fromJson(response.data);
-      await CommonFunctions.CheckResponse(baseModel);
-      var loginModel = LoginModel.fromJson(baseModel.resultObject);
+      await CommonFunctions.checkResponse(baseModel);
+      var loginModel = baseModel.resultObject as LoginModel;
       SharedPreferencesHelper.setToken(loginModel.token);
       SharedPreferencesHelper.setUserId(loginModel.userId);
       return true;
@@ -93,8 +93,8 @@ class LoginService {
           data: json.encode(param));
       print(response);
       var baseModel = BaseModel.fromJson(response.data);
-      await CommonFunctions.CheckResponse(baseModel);
-      var loginModel = LoginModel.fromJson(baseModel.resultObject);
+      await CommonFunctions.checkResponse(baseModel);
+      var loginModel = baseModel.resultObject as LoginModel;
       SharedPreferencesHelper.setToken(loginModel.token);
       SharedPreferencesHelper.setUserId(loginModel.userId);
       return true;

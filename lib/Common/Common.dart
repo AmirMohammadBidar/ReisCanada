@@ -28,7 +28,7 @@ class CommonFunctions {
     return Color(int.parse(hexColor, radix: 16));
   }
 
-  static Future<void> CheckResponse(BaseModel baseModel) async {
+  static Future<void> checkResponse(BaseModel baseModel) async {
     if (baseModel == null) {
       throw Exception(
           "There is a problem communicating with server , Please try again");

@@ -7,7 +7,7 @@ class BaseModel {
   final bool isSuccess;
   final int statusCode;
   final String statusMessage;
-  final Map<String, dynamic> resultObject;
+  final Object resultObject;
 
   BaseModel(
       this.isSuccess, this.statusCode, this.statusMessage, this.resultObject);
