@@ -1,4 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map/plugin_api.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:sizer/sizer.dart';
 
 import '../Common/Common.dart';
@@ -12,8 +17,6 @@ class RequestPage extends StatefulWidget {
 }
 
 class _RequestPageState extends State<RequestPage> {
-  //late CategoryService categoryService;
-
   var borderStyleButtons = BorderSide(
       color: CommonFunctions.hexStringToColor("#43b79c"),
       width: 1,
@@ -55,6 +58,8 @@ class _RequestPageState extends State<RequestPage> {
 
   List<DropdownMenuItem<String>> get dropdownItemsGeneratedElectricityType {
     List<DropdownMenuItem<String>> menuItems = [
+      DropdownMenuItem(
+          child: Text("Select Your Generated Electricity Type"), value: "-1"),
       DropdownMenuItem(child: Text("Sell"), value: "45"),
       DropdownMenuItem(child: Text("Save"), value: "46"),
       DropdownMenuItem(child: Text("Consumption"), value: "47"),
@@ -91,10 +96,19 @@ class _RequestPageState extends State<RequestPage> {
   final TextEditingController ConsumptionController = TextEditingController();
   final TextEditingController NElecToolsController = TextEditingController();
   final TextEditingController KWController = TextEditingController();
+  final TextEditingController DescriptionController = TextEditingController();
 
   bool MapType = true;
 
   bool DistinguishType = true;
+
+  var mapController = MapController();
+
+  var _latitude = 51.509364;
+  var _longitude = -0.128928;
+
+  var MainPoint = LatLng(51.509364, -0.128928);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -401,9 +415,7 @@ class _RequestPageState extends State<RequestPage> {
                                   if (BudgetType ==
                                       dropdownItemsBudgetType.first.value) {
                                     DistinguishType = true;
-                                  }
-                                  if (BudgetType ==
-                                      dropdownItemsBudgetType.first.value) {
+                                  } else {
                                     DistinguishType = false;
                                   }
                                 });
@@ -549,6 +561,177 @@ class _RequestPageState extends State<RequestPage> {
                               )
                             ],
                           ),
+                          formDivider,
+                          Visibility(
+                              visible: MapType,
+                              child: SizedBox(
+                                height: 30.h,
+                                width: 85.w,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      shape: BoxShape.rectangle),
+                                  child: FlutterMap(
+                                    mapController: mapController,
+                                    options: MapOptions(
+                                      center: MainPoint,
+                                      zoom: 9.2,
+                                      onMapReady: () => () {
+                                        mapController.center.latitude =
+                                            _latitude;
+                                        mapController.center.longitude =
+                                            _longitude;
+                                      },
+                                      onPositionChanged:
+                                          (position, hasGesture) => () {
+                                        setState(() {
+                                          _latitude = position.center!.latitude;
+                                          _latitude =
+                                              position.center!.longitude;
+                                        });
+                                      },
+                                      onMapEvent: (position) => {
+                                        setState(
+                                            () => MainPoint = position.center)
+                                      },
+                                    ),
+                                    nonRotatedChildren: [
+                                      AttributionWidget.defaultWidget(
+                                        source: 'OpenStreetMap contributors',
+                                        onSourceTapped: null,
+                                      ),
+                                    ],
+                                    children: [
+                                      TileLayer(
+                                        urlTemplate:
+                                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                        userAgentPackageName: 'com.example.app',
+                                      ),
+                                      MarkerLayer(
+                                        markers: [
+                                          Marker(
+                                            point: MainPoint, //,
+                                            width: 80,
+                                            height: 80,
+                                            builder: (context) => Image.asset(
+                                                "assets/images/markerIcon.png"),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
+                          Visibility(
+                              visible: !MapType,
+                              child: SizedBox(
+                                height: 30.h,
+                                width: 85.w,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      shape: BoxShape.rectangle),
+                                  child: FlutterMap(
+                                    mapController: mapController,
+                                    options: MapOptions(
+                                      center: MainPoint,
+                                      zoom: 9.2,
+                                      maxZoom: 10,
+                                      onMapReady: () => () {
+                                        mapController.center.latitude =
+                                            _latitude;
+                                        mapController.center.longitude =
+                                            _longitude;
+                                      },
+                                      onPositionChanged:
+                                          (position, hasGesture) => () {
+                                        setState(() {
+                                          _latitude = position.center!.latitude;
+                                          _latitude =
+                                              position.center!.longitude;
+                                        });
+                                      },
+                                      onMapEvent: (position) => {
+                                        setState(
+                                            () => MainPoint = position.center)
+                                      },
+                                    ),
+                                    nonRotatedChildren: [
+                                      AttributionWidget.defaultWidget(
+                                        source: 'OpenStreetMap contributors',
+                                        onSourceTapped: null,
+                                      ),
+                                    ],
+                                    children: [
+                                      TileLayer(
+                                        urlTemplate:
+                                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                        userAgentPackageName: 'com.example.app',
+                                      ),
+                                      PolygonLayer(
+                                        polygonCulling: true,
+                                        polygons: [
+                                          Polygon(
+                                              points: [
+                                                LatLng(
+                                                    MainPoint.latitude + 0.06,
+                                                    MainPoint.longitude + 0.08),
+                                                LatLng(
+                                                    MainPoint.latitude + 0.06,
+                                                    MainPoint.longitude - 0.09),
+                                                LatLng(
+                                                    MainPoint.latitude - 0.03,
+                                                    MainPoint.longitude - 0.09),
+                                                LatLng(
+                                                    MainPoint.latitude - 0.03,
+                                                    MainPoint.longitude + 0.08),
+                                              ],
+                                              color: Colors.white60,
+                                              isFilled: true,
+                                              borderColor: Colors.black,
+                                              isDotted: true,
+                                              borderStrokeWidth: 1),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              )),
+                          formDivider,
+                          TextFormField(
+                            controller: DescriptionController,
+                            maxLines: null,
+                            keyboardType: TextInputType.multiline,
+                            decoration: const InputDecoration(
+                              hintText: "Description",
+                              border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(color: Colors.grey)),
+                            ),
+                          ),
+                          formDivider,
+                          SizedBox(
+                            width: min(41.w, 200),
+                            height: min(12.w, 60),
+                            child: ElevatedButton(
+                                onPressed: () => {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  const RequestPage()))
+                                    },
+                                style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: borderRadiosButtons),
+                                    side: borderStyleButtons),
+                                child: Text("Add New Request",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 11.sp, color: Colors.white))),
+                          ),
+                          formDivider,
                         ],
                       ),
                     )),
