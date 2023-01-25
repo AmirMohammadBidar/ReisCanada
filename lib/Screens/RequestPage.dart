@@ -7,6 +7,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:sizer/sizer.dart';
 
 import '../Common/Common.dart';
+import '../Services/OrderService.dart';
 import '../Widgets/CustomDrawer.dart';
 
 class RequestPage extends StatefulWidget {
@@ -59,7 +60,10 @@ class _RequestPageState extends State<RequestPage> {
   List<DropdownMenuItem<String>> get dropdownItemsGeneratedElectricityType {
     List<DropdownMenuItem<String>> menuItems = [
       DropdownMenuItem(
-          child: Text("Select Your Generated Electricity Type"), value: "-1"),
+          child: Text(
+              overflow: TextOverflow.ellipsis,
+              "Select Your Generated Electricity Type"),
+          value: "-1"),
       DropdownMenuItem(child: Text("Sell"), value: "45"),
       DropdownMenuItem(child: Text("Save"), value: "46"),
       DropdownMenuItem(child: Text("Consumption"), value: "47"),
@@ -129,7 +133,7 @@ class _RequestPageState extends State<RequestPage> {
                     alignment: Alignment.center,
                     child: Container(
                       height: 10.h,
-                      width: 70.w,
+                      width: 80.w,
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
                           color: CommonFunctions.hexStringToColor("#ededed"),
@@ -162,7 +166,7 @@ class _RequestPageState extends State<RequestPage> {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              "Amir Bidar",
+                                              "Mrs Ahmadzadeh",
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               textAlign: TextAlign.center,
@@ -201,7 +205,7 @@ class _RequestPageState extends State<RequestPage> {
                   ),
                 ),
               ),
-              Builder(
+              /*Builder(
                 builder: (buildContext) => Positioned(
                   top: 35,
                   left: 20,
@@ -219,524 +223,533 @@ class _RequestPageState extends State<RequestPage> {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.only(top: 5.w),
-              color: Colors.white,
-              child: Column(children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(left: 5.w, top: 2.h),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Add New Request",
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w500),
-                      textAlign: TextAlign.start,
-                    ),
+          Container(
+            margin: EdgeInsets.only(top: 5.w),
+            color: Colors.white,
+            child: Column(children: <Widget>[
+              Padding(
+                padding: EdgeInsets.only(left: 5.w, top: 2.h),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Add New Request",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w500),
+                    textAlign: TextAlign.start,
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsets.only(left: 5.w, top: 1.h),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "You can add new request to review and calculate for your result",
-                      style: TextStyle(color: Colors.black54, fontSize: 11.sp),
-                      textAlign: TextAlign.start,
-                    ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: 5.w, top: 1.h),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "You can add new request to review and calculate for your result",
+                    style: TextStyle(color: Colors.black54, fontSize: 11.sp),
+                    textAlign: TextAlign.start,
                   ),
                 ),
-                const Padding(
-                  padding: EdgeInsets.only(top: 10.0),
-                  child: Divider(
-                    height: 1,
-                    color: Colors.black54,
-                  ),
+              ),
+              const Padding(
+                padding: EdgeInsets.only(top: 10.0),
+                child: Divider(
+                  height: 1,
+                  color: Colors.black54,
                 ),
-                Padding(
-                    padding: EdgeInsets.only(right: 5.w, left: 5.w, top: 4.h),
-                    child: Form(
-                      child: Column(
-                        children: [
-                          DropdownButtonFormField(
-                              borderRadius: BorderRadius.circular(20),
-                              hint: Text("Select Your Energy Type"),
-                              decoration: InputDecoration(
-                                  labelText: "Select Your Energy Type",
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  )),
-                              elevation: 5,
-                              value: (EnergyType == ""
-                                  ? dropdownItemsEnergyType.first.value
-                                  : EnergyType),
-                              items: dropdownItemsEnergyType,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  EnergyType = newValue!;
-                                });
-                              }),
-                          formDivider,
-                          DropdownButtonFormField(
-                              borderRadius: BorderRadius.circular(20),
-                              decoration: InputDecoration(
-                                  labelText: "Select Your Customer Type",
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  )),
-                              elevation: 5,
-                              value: (CustomerType == ""
-                                  ? dropdownItemsCustomerType.first.value
-                                  : CustomerType),
-                              items: dropdownItemsCustomerType,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  CustomerType = newValue!;
-                                });
-                              }),
-                          formDivider,
-                          DropdownButtonFormField(
-                              borderRadius: BorderRadius.circular(20),
-                              decoration: InputDecoration(
-                                  labelText:
-                                      "Select Your Generated Electricity Type",
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  )),
-                              elevation: 5,
-                              value: (GeneratedElectricityType == ""
-                                  ? dropdownItemsGeneratedElectricityType
-                                      .first.value
-                                  : GeneratedElectricityType),
-                              items: dropdownItemsGeneratedElectricityType,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  GeneratedElectricityType = newValue!;
-                                });
-                              }),
-                          formDivider,
-                          DropdownButtonFormField(
-                              borderRadius: BorderRadius.circular(20),
-                              decoration: InputDecoration(
-                                  labelText: "Select Your Budget Type",
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  )),
-                              elevation: 5,
-                              value: (BudgetType == ""
-                                  ? dropdownItemsBudgetType.first.value
-                                  : BudgetType),
-                              items: dropdownItemsBudgetType,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  BudgetType = newValue!;
-                                  if (BudgetType ==
-                                      dropdownItemsBudgetType.first.value) {
-                                    DistinguishType = true;
-                                  } else {
-                                    DistinguishType = false;
-                                  }
-                                });
-                              }),
-                          formDivider,
-                          Visibility(
-                            visible: DistinguishType,
-                            child: TextFormField(
-                              controller: KwController,
-                              decoration: const InputDecoration(
-                                constraints: BoxConstraints(maxHeight: 50),
-                                hintText: "Enter Required Capacity(KW)",
-                                contentPadding: EdgeInsets.all(10),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    borderSide: BorderSide(color: Colors.grey)),
-                              ),
-                            ),
-                          ),
-                          Visibility(
-                            visible: !DistinguishType,
-                            child: TextFormField(
-                              controller: budgetController,
-                              decoration: const InputDecoration(
-                                constraints: BoxConstraints(maxHeight: 50),
-                                hintText: "Enter your budget",
-                                contentPadding: EdgeInsets.all(10),
-                                border: OutlineInputBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    borderSide: BorderSide(color: Colors.grey)),
-                              ),
-                            ),
-                          ),
-                          formDivider,
-                          TextFormField(
-                            controller: ConsumptionController,
-                            decoration: const InputDecoration(
-                              constraints: BoxConstraints(maxHeight: 50),
-                              hintText:
-                                  "Enter Your Distance From Production to Consumption",
-                              contentPadding: EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: Colors.grey)),
-                            ),
-                          ),
-                          formDivider,
-                          TextFormField(
-                            controller: NElecToolsController,
-                            decoration: const InputDecoration(
-                              constraints: BoxConstraints(maxHeight: 50),
-                              hintText: "Number of Electrical Tools You Use",
-                              contentPadding: EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: Colors.grey)),
-                            ),
-                          ),
-                          formDivider,
-                          DropdownButtonFormField(
-                              borderRadius: BorderRadius.circular(20),
-                              decoration: InputDecoration(
-                                  labelText: "Do you Need Energy Storage?",
-                                  labelStyle: TextStyle(color: Colors.grey),
-                                  enabledBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        color: CommonFunctions.hexStringToColor(
-                                            "#c0c0c0"),
-                                        width: 1),
-                                    borderRadius: BorderRadius.circular(20),
-                                  )),
-                              elevation: 5,
-                              value: (EnergyStorage == ""
-                                  ? dropdownItemsEnergyStorage.first.value
-                                  : EnergyStorage),
-                              items: dropdownItemsEnergyStorage,
-                              onChanged: (String? newValue) {
-                                setState(() {
-                                  EnergyStorage = newValue!;
-                                });
-                              }),
-                          formDivider,
-                          TextFormField(
-                            controller: KWController,
-                            decoration: const InputDecoration(
-                              constraints: BoxConstraints(maxHeight: 50),
-                              hintText: "Your Energy Consumption(KW)",
-                              contentPadding: EdgeInsets.all(10),
-                              border: OutlineInputBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(10)),
-                                  borderSide: BorderSide(color: Colors.grey)),
-                            ),
-                          ),
-                          formDivider,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              RadioListTile(
-                                title: Text("This is my exact location",
-                                    style: TextStyle(fontSize: 14.sp)),
-                                dense: true,
-                                value: true,
-                                groupValue: MapType,
-                                contentPadding: EdgeInsets.zero,
-                                onChanged: (value) {
-                                  setState(() {
-                                    MapType = true;
-                                  });
-                                },
-                              ),
-                              RadioListTile(
-                                title: Text("this is my estimated location",
-                                    style: TextStyle(fontSize: 14.sp)),
-                                dense: true,
-                                value: false,
-                                groupValue: MapType,
-                                contentPadding: EdgeInsets.zero,
-                                onChanged: (value) {
-                                  setState(() {
-                                    MapType = false;
-                                  });
-                                },
-                              )
-                            ],
-                          ),
-                          formDivider,
-                          Visibility(
-                              visible: MapType,
-                              child: SizedBox(
-                                height: 30.h,
-                                width: 85.w,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      shape: BoxShape.rectangle),
-                                  child: FlutterMap(
-                                    mapController: mapController,
-                                    options: MapOptions(
-                                      center: MainPoint,
-                                      zoom: 9.2,
-                                      onMapReady: () => () {
-                                        mapController.center.latitude =
-                                            _latitude;
-                                        mapController.center.longitude =
-                                            _longitude;
-                                      },
-                                      onPositionChanged:
-                                          (position, hasGesture) => () {
-                                        setState(() {
-                                          _latitude = position.center!.latitude;
-                                          _latitude =
-                                              position.center!.longitude;
-                                        });
-                                      },
-                                      onMapEvent: (position) => {
-                                        setState(
-                                            () => MainPoint = position.center)
-                                      },
-                                    ),
-                                    nonRotatedChildren: [
-                                      AttributionWidget.defaultWidget(
-                                        source: 'OpenStreetMap contributors',
-                                        onSourceTapped: null,
-                                      ),
-                                    ],
-                                    children: [
-                                      TileLayer(
-                                        urlTemplate:
-                                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                        userAgentPackageName: 'com.example.app',
-                                      ),
-                                      MarkerLayer(
-                                        markers: [
-                                          Marker(
-                                            point: MainPoint, //,
-                                            width: 80,
-                                            height: 80,
-                                            builder: (context) => Image.asset(
-                                                "assets/images/markerIcon.png"),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+              ),
+              Padding(
+                  padding: EdgeInsets.only(right: 5.w, left: 5.w, top: 4.h),
+                  child: Form(
+                    child: Column(
+                      children: [
+                        DropdownButtonFormField(
+                            borderRadius: BorderRadius.circular(20),
+                            isExpanded: true,
+                            hint: Text("Select Your Energy Type"),
+                            decoration: InputDecoration(
+                                labelText: "Select Your Energy Type",
+                                labelStyle: TextStyle(color: Colors.grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                              )),
-                          Visibility(
-                              visible: !MapType,
-                              child: SizedBox(
-                                height: 30.h,
-                                width: 85.w,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      shape: BoxShape.rectangle),
-                                  child: FlutterMap(
-                                    mapController: mapController,
-                                    options: MapOptions(
-                                      center: MainPoint,
-                                      zoom: 9.2,
-                                      maxZoom: 10,
-                                      onMapReady: () => () {
-                                        mapController.center.latitude =
-                                            _latitude;
-                                        mapController.center.longitude =
-                                            _longitude;
-                                      },
-                                      onPositionChanged:
-                                          (position, hasGesture) => () {
-                                        setState(() {
-                                          _latitude = position.center!.latitude;
-                                          _latitude =
-                                              position.center!.longitude;
-                                        });
-                                      },
-                                      onMapEvent: (position) => {
-                                        setState(
-                                            () => MainPoint = position.center)
-                                      },
-                                    ),
-                                    nonRotatedChildren: [
-                                      AttributionWidget.defaultWidget(
-                                        source: 'OpenStreetMap contributors',
-                                        onSourceTapped: null,
-                                      ),
-                                    ],
-                                    children: [
-                                      TileLayer(
-                                        urlTemplate:
-                                            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                                        userAgentPackageName: 'com.example.app',
-                                      ),
-                                      PolygonLayer(
-                                        polygonCulling: true,
-                                        polygons: [
-                                          Polygon(
-                                              points: [
-                                                LatLng(
-                                                    MainPoint.latitude + 0.06,
-                                                    MainPoint.longitude + 0.08),
-                                                LatLng(
-                                                    MainPoint.latitude + 0.06,
-                                                    MainPoint.longitude - 0.09),
-                                                LatLng(
-                                                    MainPoint.latitude - 0.03,
-                                                    MainPoint.longitude - 0.09),
-                                                LatLng(
-                                                    MainPoint.latitude - 0.03,
-                                                    MainPoint.longitude + 0.08),
-                                              ],
-                                              color: Colors.white60,
-                                              isFilled: true,
-                                              borderColor: Colors.black,
-                                              isDotted: true,
-                                              borderStrokeWidth: 1),
-                                        ],
-                                      ),
-                                    ],
-                                  ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                              )),
-                          formDivider,
-                          TextFormField(
-                            controller: DescriptionController,
-                            maxLines: null,
-                            keyboardType: TextInputType.multiline,
-                            decoration: const InputDecoration(
-                              hintText: "Description",
-                              border: OutlineInputBorder(
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                            elevation: 5,
+                            value: (EnergyType == ""
+                                ? dropdownItemsEnergyType.first.value
+                                : EnergyType),
+                            items: dropdownItemsEnergyType,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                EnergyType = newValue!;
+                              });
+                            }),
+                        formDivider,
+                        DropdownButtonFormField(
+                            borderRadius: BorderRadius.circular(20),
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                                labelText: "Select Your Customer Type",
+                                labelStyle: TextStyle(color: Colors.grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                            elevation: 5,
+                            value: (CustomerType == ""
+                                ? dropdownItemsCustomerType.first.value
+                                : CustomerType),
+                            items: dropdownItemsCustomerType,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                CustomerType = newValue!;
+                              });
+                            }),
+                        formDivider,
+                        DropdownButtonFormField(
+                            borderRadius: BorderRadius.circular(20),
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                                labelText:
+                                    "Select Your Generated Electricity Type",
+                                labelStyle: TextStyle(color: Colors.grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                            elevation: 5,
+                            value: (GeneratedElectricityType == ""
+                                ? dropdownItemsGeneratedElectricityType
+                                    .first.value
+                                : GeneratedElectricityType),
+                            items: dropdownItemsGeneratedElectricityType,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                GeneratedElectricityType = newValue!;
+                              });
+                            }),
+                        formDivider,
+                        DropdownButtonFormField(
+                            isExpanded: true,
+                            borderRadius: BorderRadius.circular(20),
+                            decoration: InputDecoration(
+                                labelText: "Select Your Budget Type",
+                                labelStyle: TextStyle(color: Colors.grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                            elevation: 5,
+                            value: (BudgetType == ""
+                                ? dropdownItemsBudgetType.first.value
+                                : BudgetType),
+                            items: dropdownItemsBudgetType,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                BudgetType = newValue!;
+                                if (BudgetType ==
+                                    dropdownItemsBudgetType.first.value) {
+                                  DistinguishType = true;
+                                } else {
+                                  DistinguishType = false;
+                                }
+                              });
+                            }),
+                        formDivider,
+                        Visibility(
+                          visible: DistinguishType,
+                          child: TextFormField(
+                            keyboardType: TextInputType.number,
+                            controller: KwController,
+                            decoration: InputDecoration(
+                              constraints: const BoxConstraints(maxHeight: 50),
+                              hintStyle: TextStyle(fontSize: 12.sp),
+                              hintText: "Enter Required Capacity(KW)",
+                              contentPadding: const EdgeInsets.all(10),
+                              border: const OutlineInputBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10)),
                                   borderSide: BorderSide(color: Colors.grey)),
                             ),
                           ),
-                          formDivider,
-                          SizedBox(
-                            width: min(41.w, 200),
-                            height: min(12.w, 60),
-                            child: ElevatedButton(
-                                onPressed: () => {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const RequestPage()))
+                        ),
+                        Visibility(
+                          visible: !DistinguishType,
+                          child: TextFormField(
+                            controller: budgetController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(fontSize: 12.sp),
+                              constraints: const BoxConstraints(maxHeight: 50),
+                              hintText: "Enter your budget",
+                              contentPadding: const EdgeInsets.all(10),
+                              border: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(color: Colors.grey)),
+                            ),
+                          ),
+                        ),
+                        formDivider,
+                        TextFormField(
+                          controller: ConsumptionController,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            constraints: BoxConstraints(maxHeight: 50),
+                            hintText:
+                                "Enter Your Distance From Production to Consumption",
+                            hintStyle: TextStyle(fontSize: 12.sp),
+                            contentPadding: const EdgeInsets.all(10),
+                            border: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: Colors.grey)),
+                          ),
+                        ),
+                        formDivider,
+                        TextFormField(
+                          controller: NElecToolsController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            constraints: BoxConstraints(maxHeight: 50),
+                            hintText: "Number of Electrical Tools You Use",
+                            contentPadding: EdgeInsets.all(10),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: Colors.grey)),
+                          ),
+                        ),
+                        formDivider,
+                        DropdownButtonFormField(
+                            borderRadius: BorderRadius.circular(20),
+                            isExpanded: true,
+                            decoration: InputDecoration(
+                                labelText: "Do you Need Energy Storage?",
+                                labelStyle: TextStyle(color: Colors.grey),
+                                enabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: CommonFunctions.hexStringToColor(
+                                          "#c0c0c0"),
+                                      width: 1),
+                                  borderRadius: BorderRadius.circular(20),
+                                )),
+                            elevation: 5,
+                            value: (EnergyStorage == ""
+                                ? dropdownItemsEnergyStorage.first.value
+                                : EnergyStorage),
+                            items: dropdownItemsEnergyStorage,
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                EnergyStorage = newValue!;
+                              });
+                            }),
+                        formDivider,
+                        TextFormField(
+                          controller: KWController,
+                          keyboardType: TextInputType.number,
+                          decoration: const InputDecoration(
+                            constraints: BoxConstraints(maxHeight: 50),
+                            hintText: "Your Energy Consumption(KW)",
+                            contentPadding: EdgeInsets.all(10),
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: Colors.grey)),
+                          ),
+                        ),
+                        formDivider,
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            RadioListTile(
+                              title: Text("This is my exact location",
+                                  style: TextStyle(fontSize: 14.sp)),
+                              dense: true,
+                              value: true,
+                              groupValue: MapType,
+                              contentPadding: EdgeInsets.zero,
+                              onChanged: (value) {
+                                setState(() {
+                                  MapType = true;
+                                });
+                              },
+                            ),
+                            RadioListTile(
+                              title: Text("this is my estimated location",
+                                  style: TextStyle(fontSize: 14.sp)),
+                              dense: true,
+                              value: false,
+                              groupValue: MapType,
+                              contentPadding: EdgeInsets.zero,
+                              onChanged: (value) {
+                                setState(() {
+                                  MapType = false;
+                                });
+                              },
+                            )
+                          ],
+                        ),
+                        formDivider,
+                        Visibility(
+                            visible: MapType,
+                            child: SizedBox(
+                              height: 30.h,
+                              width: 85.w,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    shape: BoxShape.rectangle),
+                                child: FlutterMap(
+                                  mapController: mapController,
+                                  options: MapOptions(
+                                    center: MainPoint,
+                                    zoom: 9.2,
+                                    onMapReady: () => () {
+                                      mapController.center.latitude = _latitude;
+                                      mapController.center.longitude =
+                                          _longitude;
                                     },
-                                style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: borderRadiosButtons),
-                                    side: borderStyleButtons),
-                                child: Text("Add New Request",
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 11.sp, color: Colors.white))),
+                                    onPositionChanged: (position, hasGesture) =>
+                                        () {
+                                      setState(() {
+                                        _latitude = position.center!.latitude;
+                                        _latitude = position.center!.longitude;
+                                      });
+                                    },
+                                    onMapEvent: (position) => {
+                                      setState(
+                                          () => MainPoint = position.center)
+                                    },
+                                  ),
+                                  children: [
+                                    TileLayer(
+                                      urlTemplate:
+                                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                      userAgentPackageName: 'com.example.app',
+                                    ),
+                                    MarkerLayer(
+                                      markers: [
+                                        Marker(
+                                          point: MainPoint, //,
+                                          width: 80,
+                                          height: 80,
+                                          builder: (context) => Image.asset(
+                                              "assets/images/markerIcon.png"),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                        Visibility(
+                            visible: !MapType,
+                            child: SizedBox(
+                              height: 30.h,
+                              width: 85.w,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    shape: BoxShape.rectangle),
+                                child: FlutterMap(
+                                  mapController: mapController,
+                                  options: MapOptions(
+                                    center: MainPoint,
+                                    zoom: 9.2,
+                                    maxZoom: 10,
+                                    onMapReady: () => () {
+                                      mapController.center.latitude = _latitude;
+                                      mapController.center.longitude =
+                                          _longitude;
+                                    },
+                                    onPositionChanged: (position, hasGesture) =>
+                                        () {
+                                      setState(() {
+                                        _latitude = position.center!.latitude;
+                                        _latitude = position.center!.longitude;
+                                      });
+                                    },
+                                    onMapEvent: (position) => {
+                                      setState(
+                                          () => MainPoint = position.center)
+                                    },
+                                  ),
+                                  children: [
+                                    TileLayer(
+                                      urlTemplate:
+                                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                                      userAgentPackageName: 'com.example.app',
+                                    ),
+                                    PolygonLayer(
+                                      polygonCulling: true,
+                                      polygons: [
+                                        Polygon(
+                                            points: [
+                                              LatLng(MainPoint.latitude + 0.06,
+                                                  MainPoint.longitude + 0.08),
+                                              LatLng(MainPoint.latitude + 0.06,
+                                                  MainPoint.longitude - 0.09),
+                                              LatLng(MainPoint.latitude - 0.03,
+                                                  MainPoint.longitude - 0.09),
+                                              LatLng(MainPoint.latitude - 0.03,
+                                                  MainPoint.longitude + 0.08),
+                                            ],
+                                            color: Colors.white60,
+                                            isFilled: true,
+                                            borderColor: Colors.black,
+                                            isDotted: true,
+                                            borderStrokeWidth: 1),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            )),
+                        formDivider,
+                        TextFormField(
+                          controller: DescriptionController,
+                          maxLines: null,
+                          keyboardType: TextInputType.multiline,
+                          decoration: const InputDecoration(
+                            hintText: "Description",
+                            border: OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(color: Colors.grey)),
                           ),
-                          formDivider,
-                        ],
-                      ),
-                    )),
-              ]),
-            ),
+                        ),
+                        formDivider,
+                        SizedBox(
+                          width: min(41.w, 200),
+                          height: min(12.w, 60),
+                          child: ElevatedButton(
+                              onPressed: () {
+                                OrderService(context).SetOrder(
+                                    EnergyType,
+                                    CustomerType,
+                                    BudgetType,
+                                    GeneratedElectricityType,
+                                    ConsumptionController.text,
+                                    budgetController.text,
+                                    KwController.text,
+                                    Distance,
+                                    NElecToolsController.text,
+                                    EnergyStorage,
+                                    mapController.center.latitude,
+                                    mapController.center.longitude,
+                                    MapType,
+                                    DescriptionController.text,
+                                    MapType ? 0 : MainPoint.latitude + 0.06,
+                                    MapType ? 0 : MainPoint.longitude + 0.08,
+                                    MapType ? 0 : MainPoint.latitude + 0.06,
+                                    MapType ? 0 : MainPoint.longitude - 0.09,
+                                    MapType ? 0 : MainPoint.latitude - 0.03,
+                                    MapType ? 0 : MainPoint.longitude - 0.09,
+                                    MapType ? 0 : MainPoint.latitude - 0.03,
+                                    MapType ? 0 : MainPoint.longitude + 0.08);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: borderRadiosButtons),
+                                  side: borderStyleButtons),
+                              child: Text("Add New Request",
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 11.sp, color: Colors.white))),
+                        ),
+                        formDivider,
+                      ],
+                    ),
+                  )),
+            ]),
           ),
         ]),
       ),

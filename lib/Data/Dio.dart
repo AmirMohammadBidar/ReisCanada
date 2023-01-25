@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-const URL = "http://192.168.1.202/api";
+const URL = "http://172.20.10.4/api";
 //const URL = "http://localhost:49489/api";
 
 class Api {

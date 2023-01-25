@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:reiscanada/Services/LoginService.dart';
 import 'package:sizer/sizer.dart';
 
 import '../Common/Common.dart';
+import 'HomePage.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -25,8 +27,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController repasswordController = TextEditingController();
-  final TextEditingController organizationNameController = TextEditingController();
-
+  final TextEditingController organizationNameController =
+      TextEditingController();
 
   int clientType = Organizations.individual.value;
   bool needCompanyName = false;
@@ -165,7 +167,6 @@ class _SignUpPageState extends State<SignUpPage> {
                                     height: 50,
                                     child: TextFormField(
                                       controller: repasswordController,
-
                                       decoration: const InputDecoration(
                                         hintText: "Re-enter Password",
                                         contentPadding: EdgeInsets.all(10),
@@ -243,7 +244,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       children: <Widget>[
                                         formDivider,
                                         TextFormField(
-                                          controller: organizationNameController,
+                                          controller:
+                                              organizationNameController,
                                           decoration: const InputDecoration(
                                             constraints:
                                                 BoxConstraints(maxHeight: 50),
@@ -261,14 +263,16 @@ class _SignUpPageState extends State<SignUpPage> {
                                   )),
                               formDivider,
                               CheckboxListTile(
-                                title: Text("Yes! Sign me up to receive email exclusive offers, the lastest news and more!"),
+                                title: Text(
+                                    "Yes! Sign me up to receive email exclusive offers, the lastest news and more!"),
                                 value: newsFeed,
                                 onChanged: (newValue) {
                                   setState(() {
                                     newsFeed = newValue;
                                   });
                                 },
-                                controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                                controlAffinity: ListTileControlAffinity
+                                    .leading, //  <-- leading Checkbox
                               ),
                               formDivider,
                               Row(
@@ -297,15 +301,45 @@ class _SignUpPageState extends State<SignUpPage> {
                                   SizedBox(
                                     width: min(41.w, 200),
                                     child: ElevatedButton(
-                                        onPressed: ()
-                                        {
-
-                                          if(passwordController.text != repasswordController.text){
-                                            CommonFunctions.ShowMessage("Your passwords don't match",context,MessageType.Error);
+                                        onPressed: () {
+                                          if (passwordController.text !=
+                                              repasswordController.text) {
+                                            CommonFunctions.ShowMessage(
+                                                "Your passwords don't match",
+                                                context,
+                                                MessageType.Error);
                                             return;
                                           }
-                                          LoginService(context).RegisterUser(clientType, firstNameController.text, lastNameController.text, organizationNameController.text, emailController.text, passwordController.text, newsFeed as bool);
-
+                                          LoginService(context)
+                                              .RegisterUser(
+                                                  clientType,
+                                                  firstNameController.text,
+                                                  lastNameController.text,
+                                                  organizationNameController
+                                                      .text,
+                                                  emailController.text,
+                                                  passwordController.text,
+                                                  newsFeed as bool)
+                                              .then((value) {
+                                            if (value == true) {
+                                              CommonFunctions.ShowMessage(
+                                                  "Your account successfully created",
+                                                  context,
+                                                  MessageType.Success);
+                                              Timer(
+                                                  Duration(seconds: 2),
+                                                  () => Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const HomePage())));
+                                            } else {
+                                              CommonFunctions.ShowMessage(
+                                                  "There is an unexpected error , Please try again",
+                                                  context,
+                                                  MessageType.Error);
+                                            }
+                                          });
                                         },
                                         style: ElevatedButton.styleFrom(
                                             shape: RoundedRectangleBorder(

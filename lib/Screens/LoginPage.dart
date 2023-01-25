@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -135,32 +136,35 @@ class _LoginState extends State<LoginPage> {
                                         SizedBox(
                                           width: min(41.w, 200),
                                           child: ElevatedButton(
-                                              onPressed: () => {
-                                                    LoginService(context)
-                                                        .SignIn(
-                                                            emailController
-                                                                .text,
-                                                            passwordController
-                                                                .text)
-                                                        .then((value) => () {
-                                                              print(value);
-                                                              if (value ==
-                                                                  true) {
-                                                                Navigator.push(
-                                                                    context,
-                                                                    MaterialPageRoute(
-                                                                        builder:
-                                                                            (context) =>
-                                                                                const HomePage()));
-                                                              } else {
-                                                                CommonFunctions.ShowMessage(
-                                                                    "There is an unexpected error , Please try again",
-                                                                    context,
-                                                                    MessageType
-                                                                        .Error);
-                                                              }
-                                                            })
-                                                  },
+                                              onPressed: () {
+                                                var signIn = LoginService(
+                                                        context)
+                                                    .SignIn(
+                                                        emailController.text,
+                                                        passwordController.text)
+                                                    .then((value) {
+                                                  print(value);
+                                                  if (value == true) {
+                                                    CommonFunctions.ShowMessage(
+                                                        "Successfully logged in",
+                                                        context,
+                                                        MessageType.Success);
+                                                    Timer(
+                                                        Duration(seconds: 2),
+                                                        () => Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const HomePage())));
+                                                  } else {
+                                                    CommonFunctions.ShowMessage(
+                                                        "There is an unexpected error , Please try again",
+                                                        context,
+                                                        MessageType.Error);
+                                                  }
+                                                });
+                                              },
                                               style: ElevatedButton.styleFrom(
                                                   shape: RoundedRectangleBorder(
                                                       borderRadius:

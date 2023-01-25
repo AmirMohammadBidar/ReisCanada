@@ -1,15 +1,7 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reiscanada/Common/Common.dart';
 import 'package:reiscanada/Common/SharedPreferenceHelper.dart';
 import 'package:reiscanada/Enum/enums.dart';
-import 'package:reiscanada/Models/BaseModel.dart';
-
-import '../Data/Dio.dart';
-import '../Models/LoginModel.dart';
 
 class LoginService {
   static LoginService? _instance;
@@ -50,7 +42,7 @@ class LoginService {
               .hasMatch(email)) {
         throw Exception("Please enter a valid email");
       }
-      var param = <String, dynamic>{};
+      /* var param = <String, dynamic>{};
       param['CustomerType'] = customerType;
       param['FirstName'] = firstName;
       param['LastName'] = lastName;
@@ -64,25 +56,26 @@ class LoginService {
           data: json.encode(param));
       var baseModel = BaseModel.fromJson(response.data);
       await CommonFunctions.checkResponse(baseModel);
-      var loginModel = baseModel.resultObject as LoginModel;
-      SharedPreferencesHelper.setToken(loginModel.token);
-      SharedPreferencesHelper.setUserId(loginModel.userId);
-      return true;
+      var loginModel = baseModel.resultObject as LoginModel;*/
+      SharedPreferencesHelper.setToken("loginModel.token");
+      //loginModel.userId
+      SharedPreferencesHelper.setUserId(1);
+      return Future.value(true);
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);
-      return false;
+      return Future.value(false);
     }
   }
 
-  Future<bool> SignIn(String userName, String password) async {
+  Future<bool> SignIn(String userName, String password) {
     try {
       if (userName.isEmpty) {
         throw Exception("Please fill in you user name");
       }
       if (password.isEmpty) {
         throw Exception("Please fill in your password");
-      }
+      } /*
       var param = <String, dynamic>{};
       param['UserName'] = userName;
       param['Password'] = password;
@@ -94,14 +87,17 @@ class LoginService {
       print(response);
       var baseModel = BaseModel.fromJson(response.data);
       await CommonFunctions.checkResponse(baseModel);
-      var loginModel = baseModel.resultObject as LoginModel;
-      SharedPreferencesHelper.setToken(loginModel.token);
-      SharedPreferencesHelper.setUserId(loginModel.userId);
-      return true;
+      print(baseModel.resultObject as Map<String, dynamic>);
+      var loginModel =
+          LoginModel.fromJson(baseModel.resultObject as Map<String, dynamic>);*/
+      SharedPreferencesHelper.setToken("loginModel.token");
+      //SharedPreferencesHelper.setUserId(loginModel.userId);
+      SharedPreferencesHelper.setUserId(1);
+      return Future.value(true);
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);
-      return false;
+      return Future.value(false);
     }
   }
 }

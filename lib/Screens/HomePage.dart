@@ -37,7 +37,7 @@ class HomePage extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Container(
                       height: 10.h,
-                      width: 70.w,
+                      width: 80.w,
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(
                           color: CommonFunctions.hexStringToColor("#ededed"),
@@ -70,7 +70,7 @@ class HomePage extends StatelessWidget {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              "Amir Bidar",
+                                              "Mrs Ahmadzadeh",
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               textAlign: TextAlign.center,
@@ -109,7 +109,7 @@ class HomePage extends StatelessWidget {
                   ),
                 ),
               ),
-              Builder(
+              /* Builder(
                 builder: (buildContext) => Positioned(
                   top: 35,
                   left: 20,
@@ -127,7 +127,7 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-              ),
+              ),*/
             ],
           ),
           Expanded(
@@ -174,7 +174,7 @@ class HomePage extends StatelessWidget {
                       children: <Widget>[
                         SizedBox(
                           width: min(41.w, 200),
-                          height: min(10.w, 60),
+                          height: min(14.w, 80),
                           child: ElevatedButton(
                               onPressed: () => {
                                     Navigator.push(
@@ -194,7 +194,7 @@ class HomePage extends StatelessWidget {
                         ),
                         SizedBox(
                           width: min(41.w, 200),
-                          height: min(10.w, 60),
+                          height: min(14.w, 80),
                           child: ElevatedButton(
                               onPressed: () => {},
                               style: ElevatedButton.styleFrom(
