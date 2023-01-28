@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:reiscanada/Common/SharedPreferenceHelper.dart';
 
 const URL = "http://172.20.10.4/api";
 //const URL = "http://localhost:49489/api";
@@ -13,16 +14,24 @@ class Api {
 
   factory Api() => _singleton;
 
-  static Dio createDio() {
+  static Future<Dio> createDio() async {
+    String? token = "";
+    int? userId = 0;
+    var bool = await SharedPreferencesHelper.hasUserIdPassword();
+    if (bool) {
+      token = await SharedPreferencesHelper.getToken();
+      userId = await SharedPreferencesHelper.getUserId();
+    }
+    final Map<String, dynamic> headers = {"UserId": userId, "UnicKey": token};
     var dio = Dio(BaseOptions(
-      baseUrl: URL,
-      receiveTimeout: 15000, // 15 seconds
-      connectTimeout: 15000,
-      sendTimeout: 15000,
-    ));
+        baseUrl: URL,
+        receiveTimeout: 15000, // 15 seconds
+        connectTimeout: 15000,
+        sendTimeout: 15000,
+        headers: headers));
 
     dio.interceptors.add(AppInterceptors(dio));
-    return dio;
+    return Future.value(dio);
   }
 }
 

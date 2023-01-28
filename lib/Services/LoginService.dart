@@ -1,7 +1,17 @@
+import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:reiscanada/Common/Common.dart';
 import 'package:reiscanada/Common/SharedPreferenceHelper.dart';
 import 'package:reiscanada/Enum/enums.dart';
+import 'package:reiscanada/Screens/LoginPage.dart';
+
+import '../Data/Dio.dart';
+import '../Models/BaseModel.dart';
+import '../Models/LoginModel.dart';
 
 class LoginService {
   static LoginService? _instance;
@@ -42,7 +52,7 @@ class LoginService {
               .hasMatch(email)) {
         throw Exception("Please enter a valid email");
       }
-      /* var param = <String, dynamic>{};
+      var param = <String, dynamic>{};
       param['CustomerType'] = customerType;
       param['FirstName'] = firstName;
       param['LastName'] = lastName;
@@ -50,16 +60,16 @@ class LoginService {
       param['Email'] = email;
       param['Password'] = Password;
       param['ReceiveNews'] = receiveNews;
-      var response = await Api().dio.post('/User/RegisterUser',
+      var response = await (await Api().dio).post('/User/RegisterUser',
           options: Options(
               headers: {HttpHeaders.contentTypeHeader: "application/json"}),
           data: json.encode(param));
       var baseModel = BaseModel.fromJson(response.data);
       await CommonFunctions.checkResponse(baseModel);
-      var loginModel = baseModel.resultObject as LoginModel;*/
-      SharedPreferencesHelper.setToken("loginModel.token");
-      //loginModel.userId
-      SharedPreferencesHelper.setUserId(1);
+      var loginModel =
+          LoginModel.fromJson(baseModel.resultObject as Map<String, dynamic>);
+      SharedPreferencesHelper.setToken(loginModel.token);
+      SharedPreferencesHelper.setUserId(loginModel.userId);
       return Future.value(true);
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
@@ -68,36 +78,46 @@ class LoginService {
     }
   }
 
-  Future<bool> SignIn(String userName, String password) {
+  Future<bool> SignIn(String userName, String password) async {
     try {
       if (userName.isEmpty) {
         throw Exception("Please fill in you user name");
       }
       if (password.isEmpty) {
         throw Exception("Please fill in your password");
-      } /*
+      }
+
       var param = <String, dynamic>{};
       param['UserName'] = userName;
       param['Password'] = password;
-      print(param);
-      var response = await Api().dio.post('/User/LoginUser',
+      var response = await (await Api().dio).post('/User/LoginUser',
           options: Options(
               headers: {HttpHeaders.contentTypeHeader: "application/json"}),
           data: json.encode(param));
-      print(response);
       var baseModel = BaseModel.fromJson(response.data);
       await CommonFunctions.checkResponse(baseModel);
-      print(baseModel.resultObject as Map<String, dynamic>);
       var loginModel =
-          LoginModel.fromJson(baseModel.resultObject as Map<String, dynamic>);*/
-      SharedPreferencesHelper.setToken("loginModel.token");
-      //SharedPreferencesHelper.setUserId(loginModel.userId);
-      SharedPreferencesHelper.setUserId(1);
+          LoginModel.fromJson(baseModel.resultObject as Map<String, dynamic>);
+      SharedPreferencesHelper.setToken(loginModel.token);
+      SharedPreferencesHelper.setUserId(loginModel.userId);
       return Future.value(true);
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);
       return Future.value(false);
+    }
+  }
+
+  void GetProfile() async {
+    try {
+
+    } catch (e) {
+      CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
+          context, MessageType.Error);
+      Future.delayed(const Duration(milliseconds: 1500), () {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const LoginPage()));
+      });
     }
   }
 }

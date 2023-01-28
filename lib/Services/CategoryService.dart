@@ -26,7 +26,8 @@ class CategoryService {
       }
       var param = <String, dynamic>{};
       param['Id'] = Id;
-      var response = await Api().dio.post('/User/GetCategory',
+
+      var response = await (await Api().dio).post('/User/GetCategory',
           options: Options(
               headers: {HttpHeaders.contentTypeHeader: "application/json"}),
           data: json.encode(param));

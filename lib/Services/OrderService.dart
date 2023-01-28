@@ -1,7 +1,13 @@
+import 'dart:convert';
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
 import '../Common/Common.dart';
+import '../Data/Dio.dart';
 import '../Enum/enums.dart';
+import '../Models/BaseModel.dart';
 
 class OrderService {
   static OrderService? _instance;
@@ -36,25 +42,12 @@ class OrderService {
       RegionPoint3Lng,
       RegionPoint4Lng) async {
     try {
-      print("1");
       if (BudgetType == "54" && (Budget == null || Budget == "")) {
         throw Exception("Please fill in your Budget");
       }
-      print("2");
       if (BudgetType == "55" && (Megawatt == null || Megawatt == "")) {
         throw Exception("Please fill in your Megawatt");
       }
-      print("3");
-      CommonFunctions.ShowMessage("We successfully found a product for you",
-          context, MessageType.Success);
-      return Future.value(null);
-    } catch (e) {
-      CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
-          context, MessageType.Error);
-      return Future.value(null);
-    }
-
-    /*try {
 
       var param = <String, dynamic>{};
       param['EnergyType'] = int.parse(EnergyStorage);
@@ -82,7 +75,7 @@ class OrderService {
       param['RegionPoint3Lng'] = RegionPoint3Lng;
       param['RegionPoint4Lng'] = RegionPoint4Lng;
       print(param);
-      var response = await Api().dio.post('/User/SetOrder',
+      var response = await (await Api().dio).post('/User/SetOrder',
           options: Options(
               headers: {HttpHeaders.contentTypeHeader: "application/json"}),
           data: json.encode(param));
@@ -99,6 +92,6 @@ class OrderService {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);
       return Future.value(null);
-    }*/
+    }
   }
 }
