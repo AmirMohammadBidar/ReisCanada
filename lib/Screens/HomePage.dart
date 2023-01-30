@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:reiscanada/Common/Common.dart';
+import 'package:reiscanada/Models/ProfileModel.dart';
 import 'package:reiscanada/Screens/RequestPage.dart';
 import 'package:sizer/sizer.dart';
 
@@ -11,6 +12,7 @@ import '../Widgets/CustomDrawer.dart';
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
+  static late ProfileModel profileModel;
   @override
   Widget build(BuildContext context) {
     var borderStyleButtons = BorderSide(
@@ -70,7 +72,7 @@ class HomePage extends StatelessWidget {
                                           ),
                                           Flexible(
                                             child: Text(
-                                              "Mrs Ahmadzadeh",
+                                              profileModel.fullName,
                                               overflow: TextOverflow.ellipsis,
                                               maxLines: 1,
                                               textAlign: TextAlign.center,
@@ -89,7 +91,8 @@ class HomePage extends StatelessWidget {
                                               CommonFunctions.hexStringToColor(
                                                   "#ededed")),
                                       Text(
-                                        "Register from  1/3/2023 12:00:00 AM",
+                                        "Register from " +
+                                            profileModel.joinDate,
                                         textAlign: TextAlign.start,
                                         style: TextStyle(
                                             color: Colors.black54,

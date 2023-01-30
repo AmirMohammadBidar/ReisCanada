@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:reiscanada/Common/Common.dart';
 import 'package:reiscanada/Common/SharedPreferenceHelper.dart';
 import 'package:reiscanada/Enum/enums.dart';
+import 'package:reiscanada/Models/ProfileModel.dart';
+import 'package:reiscanada/Screens/HomePage.dart';
 import 'package:reiscanada/Screens/LoginPage.dart';
 
 import '../Data/Dio.dart';
@@ -108,9 +110,17 @@ class LoginService {
     }
   }
 
-  void GetProfile() async {
+  Future<void> GetProfile() async {
     try {
-
+      var response = await (await Api().dio).post('/User/GetProfile',
+          options: Options(
+              headers: {HttpHeaders.contentTypeHeader: "application/json"}));
+      print(response);
+      var baseModel = BaseModel.fromJson(response.data);
+      await CommonFunctions.checkResponse(baseModel);
+      var profileModel =
+          ProfileModel.fromJson(baseModel.resultObject as Map<String, dynamic>);
+      HomePage.profileModel = profileModel;
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);

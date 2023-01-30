@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:reiscanada/Models/TrackingItemModel.dart';
 
 import '../Common/Common.dart';
 import '../Data/Dio.dart';
@@ -88,6 +89,25 @@ class OrderService {
             context, MessageType.Error);
       }
       return Future.value(orderModel);
+    } catch (e) {
+      CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
+          context, MessageType.Error);
+      return Future.value(null);
+    }
+  }
+
+  Future<List<TrackingItemModel>> GetTrackingData() async {
+    try {
+      var response = await (await Api().dio).post('/User/GetProfile',
+          options: Options(
+              headers: {HttpHeaders.contentTypeHeader: "application/json"}));
+      print(response);
+      var baseModel = BaseModel.fromJson(response.data);
+      await CommonFunctions.checkResponse(baseModel);
+      var trackingModel = TrackingModel.fromJson(
+          baseModel.resultObject as Map<String, dynamic>);
+
+      return Future.value(trackingModel.TrackingItems);
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);
