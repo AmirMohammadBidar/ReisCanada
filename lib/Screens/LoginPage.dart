@@ -4,11 +4,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:reiscanada/Common/Common.dart';
-import 'package:reiscanada/Enum/enums.dart';
-import 'package:reiscanada/Screens/HomePage.dart';
 import 'package:reiscanada/Screens/SignUp.dart';
 import 'package:reiscanada/Services/LoginService.dart';
 import 'package:sizer/sizer.dart';
+
+import '../Enum/enums.dart';
+import 'HomePage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -22,12 +23,11 @@ class _LoginState extends State<LoginPage> {
   var borderRadiosButtons = BorderRadius.circular(10);
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
-  bool _showing = false;
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-      inAsyncCall: _showing,
+      inAsyncCall: CommonFunctions.isShowing,
       child: Scaffold(
         body: DefaultTextStyle(
           style: const TextStyle(decoration: TextDecoration.none),
@@ -141,41 +141,47 @@ class _LoginState extends State<LoginPage> {
                                           SizedBox(
                                             width: min(41.w, 200),
                                             child: ElevatedButton(
-                                                onPressed: () {
+                                                onPressed: () async {
                                                   setState(() {
-                                                    _showing = true;
+                                                    CommonFunctions.isShowing =
+                                                        true;
                                                   });
-                                                  var signIn =
-                                                      LoginService(context)
+                                                  var loginVal =
+                                                      await LoginService(
+                                                              context)
                                                           .SignIn(
                                                               emailController
                                                                   .text,
                                                               passwordController
-                                                                  .text)
-                                                          .then((value) {
-                                                    setState(() {
-                                                      _showing = false;
-                                                    });
-                                                    if (value == true) {
-                                                      CommonFunctions.ShowMessage(
-                                                          "Successfully logged in",
-                                                          context,
-                                                          MessageType.Success);
-                                                      Timer(
-                                                          Duration(seconds: 2),
-                                                          () => Navigator.push(
-                                                              context,
-                                                              MaterialPageRoute(
-                                                                  builder:
-                                                                      (context) =>
-                                                                          const HomePage())));
-                                                    } else {
-                                                      CommonFunctions.ShowMessage(
-                                                          "There is an unexpected error , Please try again",
-                                                          context,
-                                                          MessageType.Error);
-                                                    }
+                                                                  .text);
+                                                  setState(() {
+                                                    CommonFunctions.isShowing =
+                                                        false;
                                                   });
+                                                  print(
+                                                      "HomePage.profileModel");
+                                                  print(HomePage.profileModel);
+                                                  if (loginVal == true &&
+                                                      HomePage.profileModel !=
+                                                          null) {
+                                                    CommonFunctions.ShowMessage(
+                                                        "Successfully logged in",
+                                                        context,
+                                                        MessageType.Success);
+                                                    Timer(
+                                                        Duration(seconds: 1),
+                                                        () => Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                                builder:
+                                                                    (context) =>
+                                                                        const HomePage())));
+                                                  } else {
+                                                    CommonFunctions.ShowMessage(
+                                                        "There is an unexpected error , Please try again",
+                                                        context,
+                                                        MessageType.Error);
+                                                  }
                                                 },
                                                 style: ElevatedButton.styleFrom(
                                                     shape: RoundedRectangleBorder(

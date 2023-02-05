@@ -5,12 +5,12 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:reiscanada/Screens/HomePage.dart';
 import 'package:sizer/sizer.dart';
 
 import '../Common/Common.dart';
 import '../Services/OrderService.dart';
 import '../Widgets/CustomDrawer.dart';
+import '../Widgets/TopProfileBar.dart';
 
 class RequestPage extends StatefulWidget {
   const RequestPage({Key? key}) : super(key: key);
@@ -27,80 +27,78 @@ class _RequestPageState extends State<RequestPage> {
   var borderRadiosButtons = BorderRadius.circular(10);
   var formDivider = const Divider(color: Colors.transparent, height: 15);
 
-  List<DropdownMenuItem<String>> get dropdownItemsEnergyType {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(child: Text("Photovoltaic Energy"), value: "27"),
-      const DropdownMenuItem(child: Text("CSP"), value: "28"),
-      const DropdownMenuItem(child: Text("Wind Energy Onshore"), value: "29"),
-      const DropdownMenuItem(child: Text("Wind Energy Offshore"), value: "30"),
-      const DropdownMenuItem(child: Text("Hydroelectric Energy"), value: "31"),
-      const DropdownMenuItem(child: Text("Geothermal Energy"), value: "32"),
+  List<DropdownMenuItem<int>> get dropdownItemsEnergyType {
+    List<DropdownMenuItem<int>> menuItems = [
+      const DropdownMenuItem(value: 27, child: Text("Photovoltaic Energy")),
+      const DropdownMenuItem(value: 28, child: Text("CSP")),
+      const DropdownMenuItem(value: 29, child: Text("Wind Energy Onshore")),
+      const DropdownMenuItem(value: 30, child: Text("Wind Energy Offshore")),
+      const DropdownMenuItem(value: 31, child: Text("Hydroelectric Energy")),
+      const DropdownMenuItem(value: 32, child: Text("Geothermal Energy")),
       const DropdownMenuItem(
-          child: Text("Biomass and Biogas Energy"), value: "33"),
-      const DropdownMenuItem(
-          child: Text("Ocean Energy Wave Power"), value: "34"),
-      const DropdownMenuItem(
-          child: Text("Ocean Energy Water Flow"), value: "35"),
-      const DropdownMenuItem(child: Text("Water Flow Tide"), value: "36"),
+          value: 33, child: Text("Biomass and Biogas Energy")),
+      const DropdownMenuItem(value: 34, child: Text("Ocean Energy Wave Power")),
+      const DropdownMenuItem(value: 35, child: Text("Ocean Energy Water Flow")),
+      const DropdownMenuItem(value: 36, child: Text("Water Flow Tide")),
     ];
     return menuItems;
   }
 
-  var EnergyType = "";
+  var EnergyType = 27;
 
-  List<DropdownMenuItem<String>> get dropdownItemsCustomerType {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(child: Text("Residential"), value: "38"),
-      const DropdownMenuItem(child: Text("Corporate"), value: "39"),
-      const DropdownMenuItem(child: Text("Schools and Colleges"), value: "40"),
-      const DropdownMenuItem(child: Text("Estate / Farm House"), value: "41"),
-      const DropdownMenuItem(child: Text("Government"), value: "42"),
-      const DropdownMenuItem(child: Text("SMEs"), value: "43")
+  List<DropdownMenuItem<int>> get dropdownItemsCustomerType {
+    List<DropdownMenuItem<int>> menuItems = [
+      const DropdownMenuItem(value: 38, child: Text("Residential")),
+      const DropdownMenuItem(value: 39, child: Text("Corporate")),
+      const DropdownMenuItem(value: 40, child: Text("Schools and Colleges")),
+      const DropdownMenuItem(value: 41, child: Text("Estate / Farm House")),
+      const DropdownMenuItem(value: 42, child: Text("Government")),
+      const DropdownMenuItem(value: 43, child: Text("SMEs"))
     ];
     return menuItems;
   }
 
-  var CustomerType = "";
+  var CustomerType = 38;
 
-  List<DropdownMenuItem<String>> get dropdownItemsGeneratedElectricityType {
-    List<DropdownMenuItem<String>> menuItems = [
+  List<DropdownMenuItem<int>> get dropdownItemsGeneratedElectricityType {
+    List<DropdownMenuItem<int>> menuItems = [
       const DropdownMenuItem(
-          value: "-1",
+          value: -1,
           child: Text(
               overflow: TextOverflow.ellipsis,
               "Select Your Generated Electricity Type")),
-      const DropdownMenuItem(child: Text("Sell"), value: "45"),
-      const DropdownMenuItem(child: Text("Save"), value: "46"),
-      const DropdownMenuItem(child: Text("Consumption"), value: "47"),
-      const DropdownMenuItem(child: Text("Sell And Save"), value: "48"),
-      const DropdownMenuItem(child: Text("Cryptocurrency"), value: "49")
+      const DropdownMenuItem(value: 45, child: Text("Sell")),
+      const DropdownMenuItem(value: 46, child: Text("Save")),
+      const DropdownMenuItem(value: 47, child: Text("Consumption")),
+      const DropdownMenuItem(value: 48, child: Text("Sell And Save")),
+      const DropdownMenuItem(value: 49, child: Text("Cryptocurrency"))
     ];
     return menuItems;
   }
 
-  var GeneratedElectricityType = "";
+  var GeneratedElectricityType = 45;
 
-  List<DropdownMenuItem<String>> get dropdownItemsBudgetType {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(value: "54", child: Text("Distinguish")),
-      const DropdownMenuItem(value: "55", child: Text("NotDistinguish"))
+  List<DropdownMenuItem<int>> get dropdownItemsBudgetType {
+    List<DropdownMenuItem<int>> menuItems = [
+      const DropdownMenuItem(value: 54, child: Text("Distinguish")),
+      const DropdownMenuItem(value: 55, child: Text("NotDistinguish"))
     ];
     return menuItems;
   }
 
-  var BudgetType = "";
+  var BudgetType = 54;
 
-  List<DropdownMenuItem<String>> get dropdownItemsEnergyStorage {
-    List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(child: Text("Yes"), value: "1"),
-      const DropdownMenuItem(child: Text("No"), value: "0")
+  List<DropdownMenuItem<int>> get dropdownItemsEnergyStorage {
+    List<DropdownMenuItem<int>> menuItems = [
+      const DropdownMenuItem(value: 1, child: Text("Yes")),
+      const DropdownMenuItem(value: 0, child: Text("No"))
     ];
     return menuItems;
   }
 
-  var EnergyStorage = "";
+  var EnergyStorage = 1;
 
-  final TextEditingController KwController = TextEditingController();
+  final TextEditingController MegawatController = TextEditingController();
   final TextEditingController budgetController = TextEditingController();
   final TextEditingController ConsumptionController = TextEditingController();
   final TextEditingController NElecToolsController = TextEditingController();
@@ -117,124 +115,18 @@ class _RequestPageState extends State<RequestPage> {
   var _longitude = -0.128928;
 
   var MainPoint = LatLng(51.509364, -0.128928);
-  var iShowing = false;
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-      inAsyncCall: iShowing,
+      inAsyncCall: CommonFunctions.isShowing,
       child: Scaffold(
         drawerEnableOpenDragGesture: false,
         drawer: CustomDrawer(),
         body: Container(
           color: CommonFunctions.hexStringToColor("#f0f0f0"),
           child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-            Stack(
-              children: <Widget>[
-                Container(
-                  height: 20.h,
-                  width: 100.w,
-                  color: Colors.white,
-                  child: Padding(
-                    padding: EdgeInsets.only(top: (3.h + 5)),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Container(
-                        height: 10.h,
-                        width: 80.w,
-                        clipBehavior: Clip.antiAlias,
-                        decoration: BoxDecoration(
-                            color: CommonFunctions.hexStringToColor("#ededed"),
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(100))),
-                        child: Flex(
-                            direction: Axis.horizontal,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: <Widget>[
-                              Expanded(
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 10.0, right: 10.0),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Text(
-                                              "Welcome ",
-                                              style: TextStyle(
-                                                  color: Colors.black54,
-                                                  fontSize: 13.sp),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                            Flexible(
-                                              child: Text(
-                                                HomePage.profileModel.fullName,
-                                                overflow: TextOverflow.ellipsis,
-                                                maxLines: 1,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    color: Colors.blue,
-                                                    fontSize: 13.sp),
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                        Divider(
-                                            height: 3,
-                                            color: CommonFunctions
-                                                .hexStringToColor("#ededed")),
-                                        Text(
-                                          "Register from " +
-                                              HomePage.profileModel.joinDate,
-                                          textAlign: TextAlign.start,
-                                          style: TextStyle(
-                                              color: Colors.black54,
-                                              fontSize: 8.sp),
-                                        ),
-                                      ]),
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: Image.asset(
-                                    'assets/images/profile_male.png',
-                                    width: 13.w),
-                              )
-                            ]),
-                      ),
-                    ),
-                  ),
-                ),
-                /*Builder(
-                  builder: (buildContext) => Positioned(
-                    top: 35,
-                    left: 20,
-                    child: Material(
-                      color: Colors.white,
-                      child: InkWell(
-                        onTap: () {
-                          Scaffold.of(buildContext).openDrawer();
-                        },
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20.0),
-                          child: Image.asset("assets/images/HamburgerIcon.png",
-                              width: 40.0, height: 30.0),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),*/
-              ],
-            ),
+            TopProfilebar(),
             Container(
               margin: EdgeInsets.only(top: 5.w),
               color: Colors.white,
@@ -309,7 +201,7 @@ class _RequestPageState extends State<RequestPage> {
                                   ? dropdownItemsEnergyType.first.value
                                   : EnergyType),
                               items: dropdownItemsEnergyType,
-                              onChanged: (String? newValue) {
+                              onChanged: (int? newValue) {
                                 setState(() {
                                   EnergyType = newValue!;
                                 });
@@ -347,7 +239,7 @@ class _RequestPageState extends State<RequestPage> {
                                   ? dropdownItemsCustomerType.first.value
                                   : CustomerType),
                               items: dropdownItemsCustomerType,
-                              onChanged: (String? newValue) {
+                              onChanged: (int? newValue) {
                                 setState(() {
                                   CustomerType = newValue!;
                                 });
@@ -382,12 +274,9 @@ class _RequestPageState extends State<RequestPage> {
                                     borderRadius: BorderRadius.circular(20),
                                   )),
                               elevation: 5,
-                              value: (GeneratedElectricityType == ""
-                                  ? dropdownItemsGeneratedElectricityType
-                                      .first.value
-                                  : GeneratedElectricityType),
+                              value: GeneratedElectricityType,
                               items: dropdownItemsGeneratedElectricityType,
-                              onChanged: (String? newValue) {
+                              onChanged: (int? newValue) {
                                 setState(() {
                                   GeneratedElectricityType = newValue!;
                                 });
@@ -425,7 +314,7 @@ class _RequestPageState extends State<RequestPage> {
                                   ? dropdownItemsBudgetType.first.value
                                   : BudgetType),
                               items: dropdownItemsBudgetType,
-                              onChanged: (String? newValue) {
+                              onChanged: (int? newValue) {
                                 setState(() {
                                   BudgetType = newValue!;
                                   if (BudgetType ==
@@ -438,10 +327,10 @@ class _RequestPageState extends State<RequestPage> {
                               }),
                           formDivider,
                           Visibility(
-                            visible: DistinguishType,
+                            visible: !DistinguishType,
                             child: TextFormField(
                               keyboardType: TextInputType.number,
-                              controller: KwController,
+                              controller: MegawatController,
                               decoration: InputDecoration(
                                 constraints:
                                     const BoxConstraints(maxHeight: 50),
@@ -456,7 +345,7 @@ class _RequestPageState extends State<RequestPage> {
                             ),
                           ),
                           Visibility(
-                            visible: !DistinguishType,
+                            visible: DistinguishType,
                             child: TextFormField(
                               controller: budgetController,
                               keyboardType: TextInputType.number,
@@ -536,7 +425,7 @@ class _RequestPageState extends State<RequestPage> {
                                   ? dropdownItemsEnergyStorage.first.value
                                   : EnergyStorage),
                               items: dropdownItemsEnergyStorage,
-                              onChanged: (String? newValue) {
+                              onChanged: (int? newValue) {
                                 setState(() {
                                   EnergyStorage = newValue!;
                                 });
@@ -730,21 +619,37 @@ class _RequestPageState extends State<RequestPage> {
                             width: min(41.w, 200),
                             height: min(12.w, 60),
                             child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   setState(() {
-                                    iShowing = true;
+                                    CommonFunctions.isShowing = true;
                                   });
-                                  OrderService(context)
+
+                                  var value = await OrderService(context)
                                       .SetOrder(
                                           EnergyType,
                                           CustomerType,
                                           BudgetType,
                                           GeneratedElectricityType,
-                                          ConsumptionController.text,
-                                          budgetController.text,
-                                          KwController.text,
-                                          Distance,
-                                          NElecToolsController.text,
+                                          KWController.text == ""
+                                              ? 0
+                                              : int.parse(
+                                                  KWController.text.toString()),
+                                          budgetController.text == ""
+                                              ? null
+                                              : int.parse(
+                                                  budgetController.text),
+                                          MegawatController.text == ""
+                                              ? -1
+                                              : int.parse(
+                                                  MegawatController.text),
+                                          ConsumptionController.text == ""
+                                              ? 0
+                                              : int.parse(
+                                                  ConsumptionController.text),
+                                          NElecToolsController.text == ""
+                                              ? 0
+                                              : int.parse(
+                                                  NElecToolsController.text),
                                           EnergyStorage,
                                           mapController.center.latitude,
                                           mapController.center.longitude,
@@ -773,12 +678,11 @@ class _RequestPageState extends State<RequestPage> {
                                               : MainPoint.latitude - 0.03,
                                           MapType
                                               ? 0
-                                              : MainPoint.longitude + 0.08)
-                                      .then((value) {
-                                    setState(() {
-                                      iShowing = false;
-                                    });
+                                              : MainPoint.longitude + 0.08);
+                                  setState(() {
+                                    CommonFunctions.isShowing = false;
                                   });
+                                  print(value);
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(

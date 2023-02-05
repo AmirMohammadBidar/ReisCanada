@@ -4,9 +4,9 @@ part 'TrackingItemModel.g.dart';
 
 @JsonSerializable()
 class TrackingModel {
-  final List<TrackingItemModel> TrackingItems;
+  final List<TrackingItemModel> trackingItems;
 
-  TrackingModel(this.TrackingItems);
+  TrackingModel(this.trackingItems);
 
   factory TrackingModel.fromJson(Map<String, dynamic> json) =>
       _$TrackingModelFromJson(json);

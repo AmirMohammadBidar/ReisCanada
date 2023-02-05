@@ -100,8 +100,9 @@ class LoginService {
       await CommonFunctions.checkResponse(baseModel);
       var loginModel =
           LoginModel.fromJson(baseModel.resultObject as Map<String, dynamic>);
-      SharedPreferencesHelper.setToken(loginModel.token);
-      SharedPreferencesHelper.setUserId(loginModel.userId);
+      await SharedPreferencesHelper.setToken(loginModel.token);
+      await SharedPreferencesHelper.setUserId(loginModel.userId);
+      await GetProfile(false);
       return Future.value(true);
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
@@ -110,7 +111,7 @@ class LoginService {
     }
   }
 
-  Future<void> GetProfile() async {
+  Future<void> GetProfile(bool Redirect) async {
     try {
       var response = await (await Api().dio).post('/User/GetProfile',
           options: Options(
@@ -122,12 +123,44 @@ class LoginService {
           ProfileModel.fromJson(baseModel.resultObject as Map<String, dynamic>);
       HomePage.profileModel = profileModel;
     } catch (e) {
+      print(e);
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);
-      Future.delayed(const Duration(milliseconds: 1500), () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const LoginPage()));
-      });
+      if (Redirect) {
+        Future.delayed(const Duration(milliseconds: 1500), () {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const LoginPage()));
+        });
+      }
+    }
+  }
+
+  Future<bool> ChangeProfile(String email, String firstName, String lastName,
+      String companyName, int userType) async {
+    try {
+      var param = <String, dynamic>{};
+      param['Email'] = email;
+      param['CustomerType'] = userType;
+      param['FirstName'] = firstName;
+      param['LastName'] = lastName;
+      param['OrganizationName'] = companyName;
+      var response = await (await Api().dio).post('/User/ChangeProfile',
+          options: Options(
+              headers: {HttpHeaders.contentTypeHeader: "application/json"}),
+          data: param);
+
+      var baseModel = BaseModel.fromJson(response.data);
+
+      await CommonFunctions.checkResponse(baseModel);
+
+      var profileModel =
+          ProfileModel.fromJson(baseModel.resultObject as Map<String, dynamic>);
+      HomePage.profileModel = profileModel;
+      return Future.value(true);
+    } catch (e) {
+      CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
+          context, MessageType.Error);
+      return Future.value(false);
     }
   }
 }

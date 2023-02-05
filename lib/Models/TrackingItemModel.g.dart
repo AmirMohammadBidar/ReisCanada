@@ -8,14 +8,14 @@ part of 'TrackingItemModel.dart';
 
 TrackingModel _$TrackingModelFromJson(Map<String, dynamic> json) =>
     TrackingModel(
-      (json['TrackingItems'] as List<dynamic>)
+      (json['trackingItems'] as List<dynamic>)
           .map((e) => TrackingItemModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
 Map<String, dynamic> _$TrackingModelToJson(TrackingModel instance) =>
     <String, dynamic>{
-      'TrackingItems': instance.TrackingItems,
+      'trackingItems': instance.trackingItems,
     };
 
 TrackingItemModel _$TrackingItemModelFromJson(Map<String, dynamic> json) =>

@@ -26,6 +26,15 @@ class SharedPreferencesHelper {
     return prefs.setString(_TokenKey, Token);
   }
 
+  static Future<bool> Clear() async {
+    if (!await hasUserIdPassword()) {
+      return Future.value(true);
+    }
+    await setToken("");
+    await setUserId(0);
+    return true;
+  }
+
   static Future<bool> hasUserIdPassword() async {
     var userId = await getUserId();
     var token = await getToken();

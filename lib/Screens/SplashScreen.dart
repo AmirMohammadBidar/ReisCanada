@@ -32,7 +32,7 @@ class _SplashScreenState extends State<SplashScreen>
           Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const LoginPage()));
         } else {
-          LoginService(context).GetProfile().then((value) {
+          LoginService(context).GetProfile(true).then((value) {
             Navigator.pushReplacement(context,
                 MaterialPageRoute(builder: (context) => const HomePage()));
           });

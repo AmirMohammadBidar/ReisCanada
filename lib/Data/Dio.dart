@@ -1,18 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:reiscanada/Common/SharedPreferenceHelper.dart';
 
-const URL = "http://172.20.10.4/api";
+const URL = "http://135.181.69.39/api";
 //const URL = "http://localhost:49489/api";
 
 class Api {
   final dio = createDio();
   final tokenDio = Dio(BaseOptions(baseUrl: URL));
-
-  Api._internal();
-
-  static final _singleton = Api._internal();
-
-  factory Api() => _singleton;
 
   static Future<Dio> createDio() async {
     String? token = "";
@@ -22,6 +16,10 @@ class Api {
       token = await SharedPreferencesHelper.getToken();
       userId = await SharedPreferencesHelper.getUserId();
     }
+
+    print(token);
+    print(userId);
+
     final Map<String, dynamic> headers = {"UserId": userId, "UnicKey": token};
     var dio = Dio(BaseOptions(
         baseUrl: URL,
@@ -85,7 +83,7 @@ class InternalServerErrorException extends DioError {
 
   @override
   String toString() {
-    return 'Unknown error occurred, please try again later.';
+    return 'Unknown error occurred, please try again later';
   }
 }
 

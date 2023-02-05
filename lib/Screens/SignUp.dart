@@ -35,12 +35,11 @@ class _SignUpPageState extends State<SignUpPage> {
   bool needCompanyName = false;
   bool animationEnded = false;
   bool? newsFeed = false;
-  bool _showing = false;
 
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-      inAsyncCall: _showing,
+      inAsyncCall: CommonFunctions.isShowing,
       child: Scaffold(
         body: DefaultTextStyle(
           style: const TextStyle(decoration: TextDecoration.none),
@@ -319,7 +318,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                               return;
                                             }
                                             setState(() {
-                                              _showing = true;
+                                              CommonFunctions.isShowing = true;
                                             });
                                             LoginService(context)
                                                 .RegisterUser(
@@ -333,7 +332,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                                     newsFeed as bool)
                                                 .then((value) {
                                               setState(() {
-                                                _showing = false;
+                                                CommonFunctions.isShowing =
+                                                    false;
                                               });
                                               if (value == true) {
                                                 CommonFunctions.ShowMessage(

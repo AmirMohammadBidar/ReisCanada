@@ -4,6 +4,8 @@ import 'package:reiscanada/Models/BaseModel.dart';
 import '../Enum/enums.dart';
 
 class CommonFunctions {
+  static bool isShowing = false;
+
   static void ShowMessage(
       String message, BuildContext buildContext, MessageType messsageType) {
     Color? color;
@@ -13,7 +15,9 @@ class CommonFunctions {
     if (messsageType == MessageType.Error) {
       color = Colors.redAccent;
     }
-
+    Navigator.of(buildContext).setState(() {
+      isShowing=false;
+    });
     ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
       content: Text(message),
       backgroundColor: color,
@@ -36,5 +40,59 @@ class CommonFunctions {
     if (!baseModel.isSuccess) {
       throw Exception(baseModel.statusMessage);
     }
+  }
+
+  static showAlertDialog(BuildContext context, String Title, String Description,
+      Function OkFunction) {
+    // set up the buttons
+
+    Widget continueButton = TextButton(
+      child: const Text("Continue"),
+      onPressed: () {
+        OkFunction();
+      },
+    );
+    // set up the AlertDialog
+
+    Widget cancelButton = TextButton(
+      child: const Text("Cancel"),
+      onPressed: () {
+        Navigator.pop(context);
+      },
+    );
+    AlertDialog alert = AlertDialog(
+      title: Text(Title),
+      content: Text(Description),
+      actions: [
+        cancelButton,
+        continueButton,
+      ],
+    );
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
+  }
+}
+
+extension NavigatorStateExtension on NavigatorState {
+  void pushNamedIfNotCurrent(String routeName, {required Object arguments}) {
+    if (!isCurrent(routeName)) {
+      pushNamed(routeName, arguments: arguments);
+    }
+  }
+
+  bool isCurrent(String routeName) {
+    bool isCurrent = false;
+    popUntil((route) {
+      if (route.settings.name == routeName) {
+        isCurrent = true;
+      }
+      return true;
+    });
+    return isCurrent;
   }
 }

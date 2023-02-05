@@ -1,32 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:reiscanada/Common/Common.dart';
-import 'package:reiscanada/Screens/HomePage.dart';
+import 'package:reiscanada/Services/OrderService.dart';
 import 'package:sizer/sizer.dart';
 
+import '../Common/Common.dart';
+import '../Models/TrackingItemModel.dart';
 import '../Widgets/CustomDrawer.dart';
+import '../Widgets/TopProfileBar.dart';
 
-class TrackingPage extends StatelessWidget {
+class TrackingPage extends StatefulWidget {
   const TrackingPage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var borderStyleButtons = BorderSide(
-        color: CommonFunctions.hexStringToColor("#43b79c"),
-        width: 1,
-        style: BorderStyle.none);
-    var borderRadiosButtons = BorderRadius.circular(10);
-    var iShowing = false;
+  State<TrackingPage> createState() => _TrackingPageState();
+}
 
+class _TrackingPageState extends State<TrackingPage> {
+  var borderStyleButtons = BorderSide(
+      color: CommonFunctions.hexStringToColor("#43b79c"),
+      width: 1,
+      style: BorderStyle.none);
+  var borderRadiosButtons = BorderRadius.circular(10);
+  List<TrackingItemModel> trackingItems = <TrackingItemModel>[];
+
+  @override
+  Widget build(BuildContext context) {
     return ModalProgressHUD(
-      inAsyncCall: iShowing,
+      inAsyncCall: CommonFunctions.isShowing,
       child: Scaffold(
         drawerEnableOpenDragGesture: false,
         drawer: CustomDrawer(),
         body: Container(
           color: CommonFunctions.hexStringToColor("#f0f0f0"),
           child: Column(children: <Widget>[
-            Stack(
+            /*Stack(
               children: <Widget>[
                 Container(
                   height: 20.h,
@@ -111,7 +118,7 @@ class TrackingPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                /* Builder(
+                */ /* Builder(
                   builder: (buildContext) => Positioned(
                     top: 35,
                     left: 20,
@@ -129,9 +136,10 @@ class TrackingPage extends StatelessWidget {
                       ),
                     ),
                   ),
-                ),*/
+                ),*/ /*
               ],
-            ),
+            )*/
+            TopProfilebar(),
             Expanded(
               child: Container(
                 margin: EdgeInsets.only(top: 5.w),
@@ -170,13 +178,46 @@ class TrackingPage extends StatelessWidget {
                       color: Colors.black54,
                     ),
                   ),
-                  /*ListView.builder(
-                    itemBuilder: (context, index) => Card(
-                        color: CommonFunctions.hexStringToColor("##64646411"),
-                        child: Column(
-                          children: [Text()],
-                        )),
-                  )*/
+                  Expanded(
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(),
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          print("Clicked ${index}");
+                        },
+                        child: Card(
+                            margin: EdgeInsets.only(
+                                left: 5.w, right: 5.w, bottom: 2.h),
+                            color: CommonFunctions.hexStringToColor("#f5f5f5"),
+                            child: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Column(
+                                children: [
+                                  Text(trackingItems[index].productName),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          "Quantity :${trackingItems[index].quantity}",
+                                          textAlign: TextAlign.left)),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          "Price :${trackingItems[index].price}")),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          "Order Number :${trackingItems[index].orderNo}")),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                          "Order Status :${trackingItems[index].isDone ? "Purchased" : "Not Done"}")),
+                                ],
+                              ),
+                            )),
+                      ),
+                      itemCount: trackingItems.length,
+                    ),
+                  )
                 ]),
               ),
             ),
@@ -184,5 +225,15 @@ class TrackingPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    OrderService(context).GetTrackingData().then((value) {
+      setState(() {
+        trackingItems = value;
+        print(trackingItems);
+      });
+    });
   }
 }

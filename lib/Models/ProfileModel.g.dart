@@ -12,13 +12,19 @@ ProfileModel _$ProfileModelFromJson(Map<String, dynamic> json) => ProfileModel(
       json['companyName'] as String,
       json['email'] as String,
       json['joinDate'] as String,
+      json['userType'] as int,
+      json['firstName'] as String,
+      json['lastName'] as String,
     );
 
 Map<String, dynamic> _$ProfileModelToJson(ProfileModel instance) =>
     <String, dynamic>{
       'id': instance.id,
       'fullName': instance.fullName,
+      'firstName': instance.firstName,
+      'lastName': instance.lastName,
       'companyName': instance.companyName,
       'email': instance.email,
       'joinDate': instance.joinDate,
+      'userType': instance.userType,
     };
