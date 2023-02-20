@@ -5,6 +5,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map/plugin_api.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:reiscanada/Screens/ProductPage.dart';
 import 'package:sizer/sizer.dart';
 
 import '../Common/Common.dart';
@@ -68,9 +69,7 @@ class _RequestPageState extends State<RequestPage> {
               overflow: TextOverflow.ellipsis,
               "Select Your Generated Electricity Type")),
       const DropdownMenuItem(value: 45, child: Text("Sell")),
-      const DropdownMenuItem(value: 46, child: Text("Save")),
       const DropdownMenuItem(value: 47, child: Text("Consumption")),
-      const DropdownMenuItem(value: 48, child: Text("Sell And Save")),
       const DropdownMenuItem(value: 49, child: Text("Cryptocurrency"))
     ];
     return menuItems;
@@ -682,7 +681,13 @@ class _RequestPageState extends State<RequestPage> {
                                   setState(() {
                                     CommonFunctions.isShowing = false;
                                   });
-                                  print(value);
+                                  if (value != null) {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ProductPage(
+                                                OrderId: value as int)));
+                                  }
                                 },
                                 style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(

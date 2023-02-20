@@ -10,6 +10,7 @@ import '../Common/Common.dart';
 import '../Data/Dio.dart';
 import '../Enum/enums.dart';
 import '../Models/BaseModel.dart';
+import '../Models/OrderPageModel.dart';
 
 class OrderService {
   static OrderService? _instance;
@@ -51,31 +52,8 @@ class OrderService {
         throw Exception("Please fill in your Megawatt");
       }
 
-      print(EnergyType);
-      print(CustomerType);
-      print(BudgetType);
-      print(ElectricityGeneratedType);
-      print(ConsumptionWatt);
-      print(Budget);
-      print(Megawatt);
-      print(Distance);
-      print(ElectricalTools);
-      print(EnergyStorage);
-      print(Lat);
-      print(Lng);
-      print(IsExact);
-      print(Description);
-      print(RegionPoint1Lat);
-      print(RegionPoint2Lat);
-      print(RegionPoint3Lat);
-      print(RegionPoint4Lat);
-      print(RegionPoint1Lng);
-      print(RegionPoint2Lng);
-      print(RegionPoint3Lng);
-      print(RegionPoint4Lng);
-
       var param = <String, dynamic>{
-        'EnergyType': EnergyStorage,
+        'EnergyType': EnergyType,
         'CustomerType': CustomerType,
         'BudgetType': BudgetType,
         'ElectricityGeneratedType': EnergyStorage == -1 ? null : EnergyStorage,
@@ -98,35 +76,10 @@ class OrderService {
         'RegionPoint3Lng': RegionPoint3Lng,
         'RegionPoint4Lng': RegionPoint4Lng
       };
-      /* param['EnergyType'] = EnergyStorage;
-      param['CustomerType'] = CustomerType;
-      param['BudgetType'] = BudgetType;
-      param['ElectricityGeneratedType'] =
-          EnergyStorage == -1 ? null : EnergyStorage;
-      param['ConsumptionWatt'] = ConsumptionWatt;
-      param['Budget'] = BudgetType == 54 ? Budget : -1;
-      param['Megawatt'] = BudgetType == 55 ? Megawatt : -1;
-      param['Distance'] = Distance;
-      param['ElectricalTools'] = ElectricalTools;
-      param['EnergyStorage'] = EnergyStorage;
-      param['Lat'] = Lat;
-      param['Lng'] = Lng;
-      param['IsExact'] = IsExact;
-      param['Description'] = Description;
-      param['RegionPoint1Lat'] = RegionPoint1Lat;
-      param['RegionPoint2Lat'] = RegionPoint2Lat;
-      param['RegionPoint3Lat'] = RegionPoint3Lat;
-      param['RegionPoint4Lat'] = RegionPoint4Lat;
-      param['RegionPoint1Lng'] = RegionPoint1Lng;
-      param['RegionPoint2Lng'] = RegionPoint2Lng;
-      param['RegionPoint3Lng'] = RegionPoint3Lng;
-      param['RegionPoint4Lng'] = RegionPoint4Lng;*/
-      print(json.encode(param));
       var response = await (await Api().dio).post('/User/SetOrder',
           options: Options(
               headers: {HttpHeaders.contentTypeHeader: "application/json"}),
           data: json.encode(param));
-      print(response);
       var baseModel = BaseModel.fromJson(response.data);
       await CommonFunctions.checkResponse(baseModel);
       var orderModel = OrderRequestModel.fromJson(
@@ -148,9 +101,13 @@ class OrderService {
       var response = await (await Api().dio).post('/User/GetProducts',
           options: Options(
               headers: {HttpHeaders.contentTypeHeader: "application/json"}));
+
       var baseModel = BaseModel.fromJson(response.data);
+
       print(baseModel.resultObject);
+
       await CommonFunctions.checkResponse(baseModel);
+
       var trackingModel = TrackingModel.fromJson(
           baseModel.resultObject as Map<String, dynamic>);
       print("2");
@@ -160,6 +117,21 @@ class OrderService {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
           context, MessageType.Error);
       return Future.value(<TrackingItemModel>[]);
+    }
+  }
+
+  Future<OrderPageModel> PrepareOrderPage() async {
+    try {
+      var response = await (await Api().dio).post('/User/PrepareOrderPage',
+          options: Options(
+              headers: {HttpHeaders.contentTypeHeader: "application/json"}));
+      var baseModel = BaseModel.fromJson(response.data);
+      await CommonFunctions.checkResponse(baseModel);
+      return OrderPageModel.fromJson(baseModel as Map<String, dynamic>);
+    } catch (e) {
+      CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
+          context, MessageType.Error);
+      return Future.value(null);
     }
   }
 }

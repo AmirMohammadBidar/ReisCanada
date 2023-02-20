@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:reiscanada/Common/SharedPreferenceHelper.dart';
 
-const URL = "http://135.181.69.39/api";
+const URL = "https://reiscanada.app/api";
 //const URL = "http://localhost:49489/api";
 
 class Api {

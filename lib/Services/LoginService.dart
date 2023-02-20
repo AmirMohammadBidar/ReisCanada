@@ -72,6 +72,7 @@ class LoginService {
           LoginModel.fromJson(baseModel.resultObject as Map<String, dynamic>);
       SharedPreferencesHelper.setToken(loginModel.token);
       SharedPreferencesHelper.setUserId(loginModel.userId);
+      await GetProfile(false);
       return Future.value(true);
     } catch (e) {
       CommonFunctions.ShowMessage(e.toString().replaceAll("Exception:", ""),
