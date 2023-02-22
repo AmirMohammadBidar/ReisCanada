@@ -287,6 +287,27 @@ class _ProfilePageState extends State<ProfilePage> {
                                             color: Colors.white))),
                               )
                             ],
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              CommonFunctions.LaunchEmailSubmission(
+                                  context, "info@reiscanada.com", "", "");
+                            },
+                            child: Expanded(
+                                child: Card(
+                                    elevation: 2,
+                                    shape: RoundedRectangleBorder(
+                                        side: BorderSide(
+                                            color: Colors.black, width: 0.5),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    shadowColor: Colors.black,
+                                    child: SizedBox(
+                                        width: 80.w,
+                                        height: 5.h,
+                                        child: Center(
+                                            child:
+                                                Text("info@reiscanada.com"))))),
                           )
                         ],
                       ),

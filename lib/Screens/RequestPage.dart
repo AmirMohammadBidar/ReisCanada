@@ -678,15 +678,22 @@ class _RequestPageState extends State<RequestPage> {
                                           MapType
                                               ? 0
                                               : MainPoint.longitude + 0.08);
-                                  setState(() {
-                                    CommonFunctions.isShowing = false;
-                                  });
+
                                   if (value != null) {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => ProductPage(
-                                                OrderId: value as int)));
+                                    Future.delayed(Duration(seconds: 15), () {
+                                      setState(() {
+                                        CommonFunctions.isShowing = false;
+                                      });
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ProductPage(
+                                                  OrderId: value as int)));
+                                    });
+                                  } else {
+                                    setState(() {
+                                      CommonFunctions.isShowing = false;
+                                    });
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:reiscanada/Models/BaseModel.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../Enum/enums.dart';
 
@@ -16,7 +17,7 @@ class CommonFunctions {
       color = Colors.redAccent;
     }
     Navigator.of(buildContext).setState(() {
-      isShowing=false;
+      isShowing = false;
     });
     ScaffoldMessenger.of(buildContext).showSnackBar(SnackBar(
       content: Text(message),
@@ -75,6 +76,20 @@ class CommonFunctions {
         return alert;
       },
     );
+  }
+
+  static void LaunchEmailSubmission(
+      BuildContext context, path, subject, body) async {
+    final Uri params = Uri(
+        scheme: 'mailto',
+        path: path,
+        queryParameters: {'subject': subject, 'body': body});
+    if (await canLaunchUrl(params)) {
+      await launchUrl(params);
+    } else {
+      CommonFunctions.ShowMessage(
+          "Unable to open email app", context, MessageType.Error);
+    }
   }
 }
 

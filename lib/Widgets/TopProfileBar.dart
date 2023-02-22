@@ -69,7 +69,7 @@ class _TopProfilebarState extends State<TopProfilebar> {
                                         style: TextStyle(
                                             color: Colors.black54,
                                             fontSize: 13.sp),
-                                        textAlign: TextAlign.center,
+                                        textAlign: TextAlign.right,
                                       ),
                                       Flexible(
                                         child: Text(
